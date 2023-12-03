@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
+import java.util.ArrayList;
 
 public class Cliente {
 
@@ -79,8 +80,8 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 		ip.addItem("Usuario 3");
 		*/
 
-		ip.addItem("192.168.88.128");
-		ip.addItem("192.168.88.130");
+		// ip.addItem("192.168.88.128");
+		// ip.addItem("192.168.88.130");
 
 		JPanel panelTitulo = new JPanel();
 		panelTitulo.setLayout(new FlowLayout());
@@ -169,7 +170,20 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 
 				ObjectInputStream flujo_entrada = new ObjectInputStream(cliente.getInputStream());
 				paqueteRecibido = (PaqueteEnvio) flujo_entrada.readObject();
-				campoChat.append("\n" + paqueteRecibido.getNick() + ": " + paqueteRecibido.getMensaje());
+
+				if(!paqueteRecibido.getMensaje().equals(" online")) {
+					campoChat.append("\n" + paqueteRecibido.getNick() + ": " + paqueteRecibido.getMensaje());
+				}else{
+					// campoChat.append("\n" + paqueteRecibido.getIps());
+					ArrayList<String> IpsMenu = new ArrayList<String>();
+					IpsMenu = paqueteRecibido.getIps();
+
+					ip.removeAllItems();
+
+					for(String z:IpsMenu){
+						ip.addItem(z);
+					}
+				}
 			}
 
 		} catch (Exception e) {
